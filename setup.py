@@ -38,6 +38,7 @@ setup(
         'jira>=1.0.10',
         'jsonschema>=2.6.0',
         'mock>=2.0.0',
+	'prettytable',
         'PyStaticConfiguration>=0.10.3',
         'python-dateutil>=2.6.0',
         'PyYAML>=3.12',
