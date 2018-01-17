@@ -24,6 +24,7 @@ from jira.exceptions import JIRAError
 from requests.exceptions import RequestException
 from staticconf.loader import yaml_loader
 from texttable import Texttable
+from prettytable import PrettyTable
 from twilio.base.exceptions import TwilioRestException
 from twilio.rest import Client as TwilioClient
 from util import EAException
@@ -261,10 +262,10 @@ class Alerter(object):
             text += "Aggregation resulted in the following data for summary_table_fields ==> {0}:\n\n".format(
                 summary_table_fields_with_count
             )
-            text_table = Texttable(max_width=self.get_aggregation_summary_text__maximum_width())
-            text_table.header(summary_table_fields_with_count)
+            text_table = PrettyTable(max_width=self.get_aggregation_summary_text__maximum_width())
+            text_table._set_field_names(summary_table_fields_with_count)
             # Format all fields as 'text' to avoid long numbers being shown as scientific notation
-            text_table.set_cols_dtype(['t' for i in summary_table_fields_with_count])
+            # text_table.set_cols_dtype(['t' for i in summary_table_fields_with_count])
             match_aggregation = {}
 
             # Maintain an aggregate count for each unique key encountered in the aggregation period
@@ -276,9 +277,10 @@ class Alerter(object):
                     match_aggregation[key_tuple] = match_aggregation[key_tuple] + 1
             for keys, count in match_aggregation.iteritems():
                 text_table.add_row([key for key in keys] + [count])
-            text += text_table.draw() + '\n\n'
+            text += text_table.get_html_string() + "<br>"
 
-        return unicode(text)
+        print text
+        return text
 
     def create_default_title(self, matches):
         return self.rule['name']
@@ -419,7 +421,7 @@ class EmailAlerter(Alerter):
                 to_addr = recipient
                 if 'email_add_domain' in self.rule:
                     to_addr = [name + self.rule['email_add_domain'] for name in to_addr]
-        email_msg = MIMEText(body.encode('UTF-8'), _charset='UTF-8')
+        email_msg = MIMEText(body.encode('UTF-8'), 'html', _charset='UTF-8')
         email_msg['Subject'] = self.create_title(matches)
         email_msg['To'] = ', '.join(to_addr)
         email_msg['From'] = self.from_addr
