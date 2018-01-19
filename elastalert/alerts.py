@@ -134,7 +134,7 @@ class BasicMatchString(object):
             self.text += self.rule['name'] + '\n\n'
 
         self._add_custom_alert_text()
-        self._ensure_new_line()
+        # self._ensure_new_line()
         if self.rule.get('alert_text_type') != 'alert_text_only':
             self._add_rule_text()
             self._ensure_new_line()
