@@ -242,9 +242,6 @@ class Alerter(object):
         body = self.get_aggregation_summary_text(matches)
         for match in matches:
             body += unicode(BasicMatchString(self.rule, match))
-            # Separate text of aggregated alerts with dashes
-            if len(matches) > 1:
-                body += '\n----------------------------------------\n'
         return body
 
     def get_aggregation_summary_text__maximum_width(self):
@@ -259,9 +256,7 @@ class Alerter(object):
                 summary_table_fields = [summary_table_fields]
             # Include a count aggregation so that we can see at a glance how many of each aggregation_key were encountered
             summary_table_fields_with_count = summary_table_fields + ['count']
-            text += "Aggregation resulted in the following data for summary_table_fields ==> {0}:\n\n".format(
-                summary_table_fields_with_count
-            )
+            text += "Aggregation resulted in:\n\n"
             text_table = PrettyTable(max_width=self.get_aggregation_summary_text__maximum_width())
             text_table._set_field_names(summary_table_fields_with_count)
             # Format all fields as 'text' to avoid long numbers being shown as scientific notation
