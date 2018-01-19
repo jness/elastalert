@@ -23,7 +23,6 @@ from jira.client import JIRA
 from jira.exceptions import JIRAError
 from requests.exceptions import RequestException
 from staticconf.loader import yaml_loader
-from texttable import Texttable
 from prettytable import PrettyTable
 from twilio.base.exceptions import TwilioRestException
 from twilio.rest import Client as TwilioClient
@@ -241,12 +240,7 @@ class Alerter(object):
     def create_alert_body(self, matches):
         body = self.get_aggregation_summary_text(matches)
         for match in matches:
-        	if body == '':
-        		body += unicode(BasicMatchString(self.rule, match))
-        		# Separate text of aggregated alerts with dashes
-        		if len(matches) > 1:
-        			body += '\n----------------------------------------\n'
-        body += unicode(BasicMatchString(self.rule, match))
+            body += unicode(BasicMatchString(self.rule, match))
         return body
 
     def get_aggregation_summary_text__maximum_width(self):
