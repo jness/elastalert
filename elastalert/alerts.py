@@ -973,7 +973,7 @@ class HipChatAlerter(Alerter):
 
     def create_alert_body(self, matches):
         body = self.get_aggregation_summary_text(matches)
-        body += unicode(BasicMatchString(self.rule, matches))
+        body += unicode(BasicMatchString(self.rule, matches[0]))
         return body
 
     def get_aggregation_summary_text(self, matches):
