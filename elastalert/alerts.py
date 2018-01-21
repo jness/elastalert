@@ -241,6 +241,7 @@ class Alerter(object):
         body = self.get_aggregation_summary_text(matches)
         for match in matches:
             body += unicode(BasicMatchString(self.rule, match))
+            # Separate text of aggregated alerts with dashes
             if len(matches) > 1:
                 body += '\n----------------------------------------\n'
         return body
