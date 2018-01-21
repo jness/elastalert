@@ -241,6 +241,8 @@ class Alerter(object):
         body = self.get_aggregation_summary_text(matches)
         for match in matches:
             body += unicode(BasicMatchString(self.rule, match))
+            if len(matches) > 1:
+                body += '\n----------------------------------------\n'
         return body
 
     def get_aggregation_summary_text__maximum_width(self):
@@ -967,6 +969,15 @@ class HipChatAlerter(Alerter):
         except RequestException as e:
             raise EAException("Error posting to HipChat: %s" % e)
         elastalert_logger.info("Alert sent to HipChat room %s" % self.hipchat_room_id)
+
+    def create_alert_body(self, matches):
+        body = self.get_aggregation_summary_text(matches)
+        body += unicode(BasicMatchString(self.rule, matches))
+        return body
+
+    def get_aggregation_summary_text(self, matches):
+        text = super(HipChatAlerter, self).get_aggregation_summary_text(matches)
+        return text
 
     def get_info(self):
         return {'type': 'hipchat',
