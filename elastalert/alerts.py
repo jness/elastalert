@@ -3,6 +3,7 @@ import copy
 import datetime
 import json
 import logging
+import os
 import subprocess
 import sys
 import warnings
@@ -258,7 +259,7 @@ class Alerter(object):
                 summary_table_fields = [summary_table_fields]
             # Include a count aggregation so that we can see at a glance how many of each aggregation_key were encountered
             summary_table_fields_with_count = summary_table_fields + ['count']
-            text += "Aggregation resulted in:\n\n"
+            text += "Error Aggregation on " + os.getenv('RUN_ENV') + " resulted in:\n\n"
             text_table = PrettyTable(max_width=self.get_aggregation_summary_text__maximum_width())
             text_table._set_field_names(summary_table_fields_with_count)
             # Format all fields as 'text' to avoid long numbers being shown as scientific notation
